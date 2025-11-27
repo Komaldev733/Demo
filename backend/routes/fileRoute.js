@@ -29,15 +29,15 @@ router.get('/', async (req, res) => {
 });
 
 // Download file (redirect to Cloudinary URL)
-router.get('/download/:id', async (req, res) => {
-  try {
-    const file = await File.findById(req.params.id);
-    if (!file) return res.status(404).json({ message: "File not found" });
+// router.get('/download/:id', async (req, res) => {
+//   try {
+//     const file = await File.findById(req.params.id);
+//     if (!file) return res.status(404).json({ message: "File not found" });
 
-    res.redirect(file.fileUrl);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+//     res.redirect(file.fileUrl);
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// });
 
 module.exports = router;
