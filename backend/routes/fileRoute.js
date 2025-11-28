@@ -6,13 +6,17 @@ const File = require('../models/fileModel');
 // Upload file + save data in MongoDB
 router.post('/upload', parser.single('file'), async (req, res) => {
   try {
-    const { name, description } = req.body;
+    const { name, description,DocumentType } = req.body;
     const fileUrl = req.file.path; // Cloudinary URL
 
-    const newFile = new File({ name, description, fileUrl });
+    const newFile = new File({ name, description, fileUrl,DocumentType });
     await newFile.save();
 
+
+
     res.status(200).json({ message: "File uploaded successfully", file: newFile });
+        console.log(".........",DocumentType)
+    console.log(".........",description)
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -29,15 +33,15 @@ router.get('/', async (req, res) => {
 });
 
 // Download file (redirect to Cloudinary URL)
-// router.get('/download/:id', async (req, res) => {
-//   try {
-//     const file = await File.findById(req.params.id);
-//     if (!file) return res.status(404).json({ message: "File not found" });
+router.get('/download/:id', async (req, res) => {
+  try {
+    const file = await File.findById(req.params.id);
+    if (!file) return res.status(404).json({ message: "File not found" });
 
-//     res.redirect(file.fileUrl);
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// });
+    res.redirect(file.fileUrl);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 module.exports = router;
